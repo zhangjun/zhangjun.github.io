@@ -1,0 +1,33 @@
+language: node_js
+node_js:
+  - "v11.14.0"
+branches:
+  only:
+  - blog    # build master branch only
+cache:
+  directories:
+    - node_modules # cache dir
+  - npm
+
+before_install:
+  - export TZ='Asia/Shanghai'  # set timezone
+  - npm install -g hexo
+  - hexo init
+
+#install:
+#  - npm install -g gitbook-cli # install compile tool
+#  - gitbook install
+
+script:
+  - hexo generate
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: true
+  on:
+    branch: blog
+  local-dir: public  # static output dir
+  target-branch:  gh-pages
+  verbose: true
