@@ -5,7 +5,6 @@ branches:
   only:
     - blog    # build master branch only
 cache:
-  - npm
   directories:
     - node_modules # cache dir
 
