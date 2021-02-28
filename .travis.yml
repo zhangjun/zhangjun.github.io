@@ -11,13 +11,13 @@ cache:
 before_install:
   - export TZ='Asia/Shanghai'  # set timezone
   - npm install -g hexo
-  - hexo init
 
 #install:
 #  - npm install -g gitbook-cli # install compile tool
 #  - gitbook install
 
 script:
+  - hexo clean
   - hexo generate
 
 deploy:
