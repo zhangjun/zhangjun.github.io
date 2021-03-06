@@ -1,5 +1,17 @@
+---
+title: hexo
+date: 2021-03-01 07:17:58
+tags:
+---
 # hexo
-
+## new post
+```
+hexo new [layout] titile
+```
+-p 自定义新文章路径, 如下面会在source/article目录下新建tensorrt.md
+```
+hexo new -p article/tensorrt "TensorRT"
+```
 ## admin
 
 ## ref
