@@ -4,6 +4,8 @@ date: 2021-03-01 07:17:58
 tags:
 ---
 # hexo
+# hexo init
+该命令初始化博客
 ## new post
 ```
 hexo new [layout] titile
