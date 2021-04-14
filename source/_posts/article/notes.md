@@ -20,3 +20,11 @@ find_program(CCACHE_FOUND ccache)
         set(CMAKE_CXX_COMPILER_LAUNCHER ccache)
     endif()
 ```
+
+# conv
+| input      | filter    | output     |
+| ---------- | --------- | ---------- |
+| 1x32x40x80 | 16x32x3x3 | 1x16x40x80 |
+
+int kernel_size = kernel_w * kernel_h;
+int num_input = weight_data_size / kernel_size / num_output;

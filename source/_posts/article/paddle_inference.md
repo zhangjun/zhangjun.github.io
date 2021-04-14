@@ -21,3 +21,8 @@ class EngineBase {
   virtual ~EngineBase() {}
 }; 
 ```
+
+## 待添加
+framework::ProgramDesc
+framework::Executor* executor
+framework::Scope* scope
