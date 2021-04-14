@@ -28,3 +28,10 @@ find_program(CCACHE_FOUND ccache)
 
 int kernel_size = kernel_w * kernel_h;
 int num_input = weight_data_size / kernel_size / num_output;
+
+# cento8 epel配置aliyun源
+首先安装epel配置包
+yum install -y  https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
+然后将 repo 配置中的地址替换为阿里云镜像站地址
+sed -i 's|^#baseurl=https://download.fedoraproject.org/pub|baseurl=https://mirrors.aliyun.com|' /etc/yum.repos.d/epel*
+sed -i 's|^metalink|#metalink|' /etc/yum.repos.d/epel*
