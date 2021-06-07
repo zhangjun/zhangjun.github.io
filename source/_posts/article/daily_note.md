@@ -10,4 +10,4 @@ https://github.com/Oramy/m2-cgpu
 
 
 ## dl deploy
-github.com/uber/neuropod
+https://github.com/uber/neuropod
