@@ -59,7 +59,7 @@ for (int i = 0; i < array_length_; ++i) {
 }
 ```
 
-buffer 
+swift 
 ```
 let device = MTLCreateSystemDefaultDevice()!
 let queue = device.makeCommandQueue()!
@@ -75,4 +75,12 @@ let texture = buffer?.makeTexture(descriptor: textureDescriptor, offset: 0, byte
 
 let texture = device.makeTexture(descriptor: textureDescriptor)
 texture?.replace(region: MTLRegionMake2D(0, 0, w, h), mipmapLevel: 0, withBytes: data, bytesPerRow: 4 * w)
+
+# buffer
+let count = 1500
+var myVector = [Float](repeating: 0, count: count)
+var length = count * MemoryLayout< Float >.stride
+var outBuffer = device.makeBuffer(bytes: myVector, length: length, options: [])
+for (index, value) in myVector.enumerated() { myVector[index] = Float(index) }
+var inBuffer = device.makeBuffer(bytes: myVector, length: length, options: [])
 ```
