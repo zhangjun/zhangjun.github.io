@@ -21,6 +21,14 @@ find_program(CCACHE_FOUND ccache)
     endif()
 ```
 
+# conv
+| input      | filter    | output     |
+| ---------- | --------- | ---------- |
+| 1x32x40x80 | 16x32x3x3 | 1x16x40x80 |
+
+int kernel_size = kernel_w * kernel_h;
+int num_input = weight_data_size / kernel_size / num_output;
+
 # cento8 epel配置aliyun源
 首先安装epel配置包
 yum install -y  https://mirrors.aliyun.com/epel/epel-release-latest-8.noarch.rpm
