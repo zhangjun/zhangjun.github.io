@@ -58,3 +58,21 @@ for (int i = 0; i < array_length_; ++i) {
                slice:static_cast<NSUInteger>(i)];
 }
 ```
+
+buffer 
+```
+let device = MTLCreateSystemDefaultDevice()!
+let queue = device.makeCommandQueue()!
+let textureDescriptor = MTLTextureDescriptor()
+textureDescriptor.textureType = .type2D
+textureDescriptor.pixelFormat = .r16Uint
+textureDescriptor.width = bufferWidth
+textureDescriptor.height = 256
+textureDescriptor.usage = [.shaderRead, .shaderWrite]
+
+
+let texture = buffer?.makeTexture(descriptor: textureDescriptor, offset: 0, bytesPerRow: bufferWidth*MemoryLayout<UInt16>.stride)
+
+let texture = device.makeTexture(descriptor: textureDescriptor)
+texture?.replace(region: MTLRegionMake2D(0, 0, w, h), mipmapLevel: 0, withBytes: data, bytesPerRow: 4 * w)
+```
