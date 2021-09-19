@@ -340,3 +340,176 @@ class ParamTypeDummyRegistry {
   ParamTypeDummyRegistry() = default;
 };
 ```
+
+# 注册机制
+## op注册
+```
+#define REGISTER_LITE_OP(op_type__, OpClass)                                   \
+  static paddle::lite::OpLiteRegistrar op_type__##__registry(                  \
+      #op_type__, []() {                                                       \
+        return std::unique_ptr<paddle::lite::OpLite>(new OpClass(#op_type__)); \
+      });                                                                      \
+  int touch_op_##op_type__() {                                                 \
+    op_type__##__registry.touch();                                             \
+    OpKernelInfoCollector::Global().AddOp2path(#op_type__, __FILE__);          \
+    return 0;                                                                  \
+  }
+```
+## kernel 注册
+```
+// Register a kernel.
+#define REGISTER_LITE_KERNEL(                                                 \
+    op_type__, target__, precision__, layout__, KernelClass, alias__)         \
+  static paddle::lite::KernelRegistrar                                        \
+      op_type__##target__##precision__##layout__##alias__##_kernel_registry(  \
+          #op_type__,                                                         \
+          TARGET(target__),                                                   \
+          PRECISION(precision__),                                             \
+          DATALAYOUT(layout__),                                               \
+          []() {                                                              \
+            std::unique_ptr<KernelClass> x(new KernelClass);                  \
+            x->set_op_type(#op_type__);                                       \
+            x->set_alias(#alias__);                                           \
+            return x;                                                         \
+          });                                                                 \
+  int touch_##op_type__##target__##precision__##layout__##alias__() {         \
+    op_type__##target__##precision__##layout__##alias__##_kernel_registry     \
+        .touch();                                                             \
+    OpKernelInfoCollector::Global().AddKernel2path(                           \
+        #op_type__ "," #target__ "," #precision__ "," #layout__ "," #alias__, \
+        __FILE__);                                                            \
+    return 0;                                                                 \
+  }                                                                           \
+  ParamTypeRegistry(                                                          \
+      op_type__, target__, precision__, layout__, KernelClass, alias__)
+```
+# program
+## scope
+```
+class Scope final {
+ public:
+  Scope()
+      : kids_lock_{new lite::fluid::RWLock},
+        vars_lock_{new lite::fluid::RWLock},
+        rwlock_{new lite::fluid::RWLock} {}
+  // delete below two functions to allow pybind to recognise it cannot make a
+  // copy
+  // link:
+  // https://stackoverflow.com/questions/53807248/pybind11-returning-a-pointer-to-a-container-of-unique-ptr
+  Scope(const Scope&) = delete;
+  Scope& operator=(const Scope&) = delete;
+  ~Scope();
+
+  Scope& NewScope() const;
+
+  Variable* Var(const std::string& name);
+
+  Variable* LocalVar(const std::string& name);
+
+  Variable* FindVar(const std::string& name) const;
+
+  Variable* FindLocalVar(const std::string& name) const;
+
+  const Scope* parent() const { return parent_; }
+
+  // Get attribute params stored in parent scopes.
+  std::vector<std::string> AttributeVarNames() const;
+  // Following the legacy scope interface.
+  std::vector<std::string> LocalVarNames() const;
+
+  /// ------------------------------------- helper functions for Tensor
+  /// ----------------------------------
+  // Create a Tensor variable. This will create a new Variable called `name`.
+  Tensor* NewTensor(const std::string& name) {
+    auto* var = Var(name);
+    return var->GetMutable<Tensor>();
+  }
+
+  const Tensor* FindTensor(const std::string& name) {
+    auto* var = FindVar(name);
+    if (!var) return nullptr;
+    return &var->Get<Tensor>();
+  }
+
+  Tensor* FindMutableTensor(const std::string& name) {
+    auto* var = FindVar(name);
+    if (!var) return nullptr;
+    return var->GetMutable<Tensor>();
+  }
+
+  std::vector<Tensor>* NewTensorList(const std::string& name) {
+    auto* var = Var(name);
+    return var->GetMutable<std::vector<Tensor>>();
+  }
+
+  const std::vector<Tensor>* FindTensorList(const std::string& name) {
+    auto* var = FindVar(name);
+    if (!var) return nullptr;
+    return &var->Get<std::vector<Tensor>>();
+  }
+
+  std::vector<Tensor>* FindMutableTensorList(const std::string& name) {
+    auto* var = FindVar(name);
+    if (!var) return nullptr;
+    return var->GetMutable<std::vector<Tensor>>();
+  }
+
+ private:
+  // Scope in `kids_` are owned by this class.
+  mutable std::list<Scope*> kids_;
+  const Scope* parent_{nullptr};
+  std::map<std::string, std::unique_ptr<Variable>> vars_;
+  std::unique_ptr<lite::fluid::RWLock> kids_lock_{nullptr};
+  std::unique_ptr<lite::fluid::RWLock> vars_lock_{nullptr};
+  std::unique_ptr<lite::fluid::RWLock> rwlock_{nullptr};
+};
+```
+# optimize
+## optimizer
+```
+/*
+ * lite::Optimizer optimize a program. It utilize the mir passes to analysis the
+ * program and export an optimized program.
+ * Example :
+ *       // (1) Create an optimizer
+ *       Optimizer optim(valid_places, kernel_pick_factor);
+ *       // (2) add an optimizer method
+ *       optim.AddPass("post_quant_dynamic_pass");
+ *       // (3) analysis a program to export an optimized program
+ *       auto program_ = optim.Run(std::move(program));
+ */
+class Optimizer {
+ public:
+  Optimizer(const std::vector<Place>& valid_places,
+            core::KernelPickFactor kernel_pick_factor)
+      : valid_places_(valid_places), kernel_pick_factor_(kernel_pick_factor) {
+    CHECK(!valid_places.empty()) << "At least one valid_place should be set";
+  }
+
+  // Append a pass to the optimizer.
+  void AddPass(const std::string& pass_name);
+  // Optimize a program to generate a runtime program.
+  std::unique_ptr<RuntimeProgram> Run(Program&& program);
+
+ protected:
+  // Run all the added passes.
+  void ApplyPasses(std::vector<std::unique_ptr<mir::SSAGraph>>* graphes);
+
+  // Generate the optimized runtime program.
+  std::unique_ptr<RuntimeProgram> GenRuntimeProgram(
+      std::vector<std::unique_ptr<mir::SSAGraph>>* graphs);
+
+  void InitTargetTypeTransformPass();
+  void InitControlFlowOpUnusedInputsAndOutputsEliminatePass();
+  void InitControlFlowOpSharedInputsAndOutputsPlaceSyncPass();
+  void SpecifyKernelPickTactic(core::KernelPickFactor factor);
+  Scope* exec_scope() { return exec_scope_; }
+
+ private:
+  std::vector<Place> valid_places_;
+  Scope* exec_scope_{};
+  std::vector<mir::Pass*> passes_;
+  std::vector<std::unique_ptr<mir::SSAGraph>> graphs_;
+  core::KernelPickFactor kernel_pick_factor_;
+};
+```
