@@ -5,6 +5,7 @@ tags:
 ---
 
 # macOS python load Framework
+https://docs.python.org/3/library/ctypes.html
 ```
 from ctypes.util import find_library
 from ctypes import cdll
