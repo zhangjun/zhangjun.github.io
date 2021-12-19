@@ -8,6 +8,8 @@ https://docs.docker.com/engine/reference/builder/
 
 
 # ubuntu docker
+
+ https://askubuntu.com/questions/1140183/install-gcc-9-on-ubuntu-18-04
 ```
 FROM ubuntu:16.04
 
