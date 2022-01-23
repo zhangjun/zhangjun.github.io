@@ -1,7 +1,7 @@
 ---
 title: TensorRT
 date: 2022-01-06 07:47:06
-tags:
+tags: GPU, TensorRT
 ---
 [TOC]
 # introduction
