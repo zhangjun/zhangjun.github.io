@@ -58,6 +58,19 @@ python3
   
   能支持多种框架，包括 TensorFlow, TensorRT, PyTorch, ONNX Runtime, 或者自定义框架。
 
+# TensorRT 基础
+## 创建引擎
+## 构建推理
+
+## plugin
+
+## TensorRT 优化
+https://blog.csdn.net/qq_33287871/article/details/117201271
+* Weight &Activation Precision Calibration
+* Layer & Tensor Fusion
+* Kernel Auto-Tuning
+* Dynamic Tensor Memory
+* Multi-Stream Execution
 
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
