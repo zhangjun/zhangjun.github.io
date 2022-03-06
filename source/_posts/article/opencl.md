@@ -26,7 +26,9 @@ fiber(work item) - wave - workgroup
   Local Memory coalesced access
   ![coalesced access](https://pic3.zhimg.com/80/v2-4ab02630d7f1fdc1d01ce2973316788e_1440w.jpg)
 * private memory
+
 ## 存储对象类型
+
 * buffer
 * image
 * pipe
