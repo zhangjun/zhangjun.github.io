@@ -74,6 +74,16 @@ https://blog.csdn.net/qq_33287871/article/details/117201271
 * Dynamic Tensor Memory
 * Multi-Stream Execution
 
+# TensorRT API
+```
+bool reshapeWeights(
+    const Weights& input, int32_t const* shape, int32_t const* shapeOrder, void* data, int32_t nbDims) noexcept;
+bool reorderSubBuffers(
+    void* input, int32_t const* order, int32_t num, int32_t size) noexcept;
+bool transposeSubBuffers(
+    void* input, DataType type, int32_t num, int32_t height, int32_t width) noexcept;
+```
+
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
 
