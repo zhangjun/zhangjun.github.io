@@ -14,6 +14,8 @@ tags: GPU, TensorRT
 * pip 形式进行安装
 
 ## container 形式安装
+下载https://github.com/NVIDIA/TensorRT/blob/main/docker/ubuntu-18.04.Dockerfile
+```docker build -f ubuntu-18.04.Dockerfile --build-arg CUDA_VERSION=11.4.3 --tag=tensorrt-ubuntu .```
 
 ## debian 形式安装
 ## pip形式进行安装
