@@ -158,3 +158,7 @@ int main() {
   return 0;
 }
 ```
+# 核心要点
+* 工作队列 work queu
+* thread factory
+* 饱和策略 handler

@@ -84,6 +84,8 @@ bool transposeSubBuffers(
     void* input, DataType type, int32_t num, int32_t height, int32_t width) noexcept;
 ```
 
+# DLA
+## DLA Supported Layers
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
 
