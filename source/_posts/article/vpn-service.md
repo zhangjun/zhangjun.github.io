@@ -14,7 +14,7 @@ tags:
    申请地址：https://my.freenom.com/
    申请时需要保证个人资料地址信息与网络ip地址信息一致；国内ip环境，需使用Gooreplacer chrome插件将www.google.com/recaptcha 重定向recaptcha.net/recaptcha
 - eu.org免费域名申请
-  申请地址：https://nic.eu.org/arf/en/（需使用代理）
+  申请地址：https://nic.eu.org/arf/en (需使用代理)
 - https://pp.ua/ 免费域名申请
 
 ### 2、域名解析
