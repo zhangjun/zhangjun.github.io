@@ -60,6 +60,34 @@ python3
   
   能支持多种框架，包括 TensorFlow, TensorRT, PyTorch, ONNX Runtime, 或者自定义框架。
 
+# TensorRT 基础介绍
+## 创建引擎
+## 构建推理
+
+## dynamic shape
+ createNetwork()与createNetworkV2()的区别有两处，一是前者处理的维度为(C,H,W), 后者为(B,C,H,W)；二是后者支持dynamic shapes。
+## plugin
+
+ * createNetwork()
+ * createNetworkV2()
+## TensorRT 优化
+ https://blog.csdn.net/qq_33287871/article/details/117201271
+ * Weight &Activation Precision Calibration
+ * Layer & Tensor Fusion
+ * Kernel Auto-Tuning
+ * Dynamic Tensor Memory
+ * Multi-Stream Execution
+
+# TensorRT API
+ ```
+ bool reshapeWeights(
+     const Weights& input, int32_t const* shape, int32_t const* shapeOrder, void* data, int32_t nbDims) noexcept;
+ bool reorderSubBuffers(
+     void* input, int32_t const* order, int32_t num, int32_t size) noexcept;
+ bool transposeSubBuffers(
+     void* input, DataType type, int32_t num, int32_t height, int32_t width) noexcept;
+ ```
+# TensorRT 常见问题
 
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
