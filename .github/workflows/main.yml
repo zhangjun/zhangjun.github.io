@@ -34,11 +34,11 @@ jobs:
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
         npm ci
-        npm install -g hexo
 
     - name: run npm
       id: gererate-pages
       run: |
+        npm install -g hexo
         hexo clean
         hexo generate
 
