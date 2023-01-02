@@ -58,6 +58,15 @@ python3
   
   能支持多种框架，包括 TensorFlow, TensorRT, PyTorch, ONNX Runtime, 或者自定义框架。
 
+# TensorRT 基础介绍
+
+## dynamic shape
+createNetwork()与createNetworkV2()的区别有两处，一是前者处理的维度为(C,H,W), 后者为(B,C,H,W)；二是后者支持dynamic shapes。
+
+* createNetwork()
+* createNetworkV2()
+
+# TensorRT 常见问题
 
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
