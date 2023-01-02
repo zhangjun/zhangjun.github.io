@@ -48,16 +48,25 @@ jobs:
         hexo clean
         hexo generate
 
-    # Deploy hexo blog website.
-    - name: Upload artifact
-      uses: actions/upload-pages-artifact@v1
-      with:
-        # Upload entire repository
-        path: './public'
     - name: Deploy to GitHub Pages
-      id: deployment
-      uses: actions/deploy-pages@v1
-      # echo ::set-output name=notify::"Deploy complate."
+      if: success()
+      uses: crazy-max/ghaction-github-pages@v3
+      with:
+        target_branch: gh-pages
+        build_dir: public
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    # Deploy hexo blog website.
+ #   - name: Upload artifact
+ #     uses: actions/upload-pages-artifact@v1
+ #     with:
+ #       # Upload entire repository
+ #       path: './public'
+ #   - name: Deploy to GitHub Pages
+ #     id: deployment
+ #     uses: actions/deploy-pages@v1
+ #     # echo ::set-output name=notify::"Deploy complate."
 
     # Deploy hexo blog website.
 #     - name: Deploy
