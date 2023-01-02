@@ -57,29 +57,29 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
-    # Deploy hexo blog website.
- #   - name: Upload artifact
- #     uses: actions/upload-pages-artifact@v1
- #     with:
- #       # Upload entire repository
- #       path: './public'
- #   - name: Deploy to GitHub Pages
- #     id: deployment
- #     uses: actions/deploy-pages@v1
- #     # echo ::set-output name=notify::"Deploy complate."
+    # # Deploy hexo blog website.
+    # - name: Upload artifact
+    #   uses: actions/upload-pages-artifact@v1
+    #   with:
+    #     # Upload entire repository
+    #     path: './public'
+    # - name: Deploy to GitHub Pages
+    #   id: deployment
+    #   uses: actions/deploy-pages@v1
+    #   # echo ::set-output name=notify::"Deploy complate."
 
     # Deploy hexo blog website.
-#     - name: Deploy
-#       id: deploy
-#       uses: sma11black/hexo-action@v1.0.4
-#       with:
-#         # Github user name
-#         user_name: ${{ secrets.USERNAME }} # default is github-actions[bot]
-#         # Github email
-#         user_email: ${{ secrets.MAIL }} # default is 41898282+github-actions[bot]@users.noreply.github.com
-#         deploy_key: ${{ secrets.GITHUB_TOKEN }}
-#         commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
-#     # Use the output from the `deploy` step(use for test action)
-#     - name: Get the output
-#       run: |
-#         echo "${{ steps.deploy.outputs.notify }}"
+    #  - name: Deploy
+    #    id: deploy
+    #    uses: sma11black/hexo-action@v1.0.4
+    #    with:
+    #      # Github user name
+    #      user_name: ${{ secrets.USERNAME }} # default is github-actions[bot]
+    #      # Github email
+    #      user_email: ${{ secrets.MAIL }} # default is 41898282+github-actions[bot]@users.noreply.github.com
+    #      deploy_key: ${{ secrets.GITHUB_TOKEN }}
+    #      commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
+    #  # Use the output from the `deploy` step(use for test action)
+    #  - name: Get the output
+    #    run: |
+    #      echo "${{ steps.deploy.outputs.notify }}"
