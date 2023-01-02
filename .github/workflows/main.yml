@@ -39,12 +39,12 @@ jobs:
     - name: Install Dependencies
       if: steps.cache.outputs.cache-hit != 'true'
       run: |
-        npm install -g hexo
         npm ci
 
     - name: run npm
       id: gererate-pages
       run: |
+        npm install -g hexo
         hexo clean
         hexo generate
 
