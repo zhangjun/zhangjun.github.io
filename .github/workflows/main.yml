@@ -10,6 +10,9 @@ on:
 
 jobs:
   build:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     name: A job to deploy blog.
     steps:
@@ -39,12 +42,16 @@ jobs:
         hexo clean
         hexo generate
 
-    - name: deploy
-      id: deploy
-      run: |
-        cd ./public
-        echo "deploy"
-        # echo ::set-output name=notify::"Deploy complate."
+    # Deploy hexo blog website.
+    - name: Upload artifact
+      uses: actions/upload-pages-artifact@v1
+      with:
+        # Upload entire repository
+        path: './public'
+    - name: Deploy to GitHub Pages
+      id: deployment
+      uses: actions/deploy-pages@v1
+      # echo ::set-output name=notify::"Deploy complate."
 
     # Deploy hexo blog website.
 #     - name: Deploy
@@ -58,6 +65,6 @@ jobs:
 #         deploy_key: ${{ secrets.GITHUB_TOKEN }}
 #         commit_msg: ${{ github.event.head_commit.message }}  # (or delete this input setting to use hexo default settings)
 #     # Use the output from the `deploy` step(use for test action)
-    - name: Get the output
-      run: |
-        echo "${{ steps.deploy.outputs.notify }}"
+#     - name: Get the output
+#       run: |
+#         echo "${{ steps.deploy.outputs.notify }}"
