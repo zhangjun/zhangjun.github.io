@@ -14,6 +14,8 @@ tags: GPU, TensorRT
 * pip 形式进行安装
 
 ## container 形式安装
+下载https://github.com/NVIDIA/TensorRT/blob/main/docker/ubuntu-18.04.Dockerfile
+```docker build -f ubuntu-18.04.Dockerfile --build-arg CUDA_VERSION=11.4.3 --tag=tensorrt-ubuntu .```
 
 ## debian 形式安装
 ## pip形式进行安装
@@ -58,15 +60,6 @@ python3
   
   能支持多种框架，包括 TensorFlow, TensorRT, PyTorch, ONNX Runtime, 或者自定义框架。
 
-# TensorRT 基础介绍
-
-## dynamic shape
-createNetwork()与createNetworkV2()的区别有两处，一是前者处理的维度为(C,H,W), 后者为(B,C,H,W)；二是后者支持dynamic shapes。
-
-* createNetwork()
-* createNetworkV2()
-
-# TensorRT 常见问题
 
 # reference
 [TensorRT](https://github.com/NVIDIA/TensorRT)
