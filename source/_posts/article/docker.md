@@ -6,7 +6,12 @@ tags:
 # docker build
 https://docs.docker.com/engine/reference/builder/
 
+## install docker
 
+```
+sudo yum install -y yum-utils
+sudo yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+```
 # ubuntu docker
 
  https://askubuntu.com/questions/1140183/install-gcc-9-on-ubuntu-18-04
