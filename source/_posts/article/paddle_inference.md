@@ -1,11 +1,3 @@
-<!--
- * @Author: Zhang Jun ewalker@live.cn
- * @Date: 2021-09-05 18:00:17
- * @LastEditors: Zhang Jun ewalker@live.cn
- * @LastEditTime: 2022-06-01 00:26:44
- * @FilePath: /undefined/Users/apple/Downloads/zhangjun/github/zhangjun.github.io/source/_posts/article/paddle_inference.md
- * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
--->
 ---
 title: paddle inference
 date: 2021-03-16 03:32:13
@@ -60,5 +52,30 @@ paddle/fluid/framework/operator.cc#L204
 ```
 ```
 void OperatorBase::Run(const Scope& scope, const platform::Place& place) {
+  auto dev_id = place.device;
+  platform::SetDeviceId(dev_id);
+  auto op_name = platform::OpName(outputs_, Type());
+  RunImpl(scope, place);
+}
+```
+```
+void OperatorWithKernel::RunImpl(const Scope& scope,
+                                 const platform::Place& place,
+                                 RuntimeContext* runtime_ctx) const {
+  platform::DeviceContextPool& pool = platform::DeviceContextPool::Instance();
+  auto* dev_ctx = pool.Get(place);
+  auto exe_ctx = ExecutionContext(*this, scope, *dev_ctx, *runtime_ctx);
+  // using cache
+  if (kernel_type_.get()) {
+    dev_ctx = pool.Get(kernel_type_->place_);
+  }
+  {
+    impl_ =
+        new CacheImpl(new phi::KernelContext(),
+                          new RuntimeInferShapeContext(*this, *runtime_ctx));
+    BuildPhiKernelContext(*runtime_ctx, dev_ctx, impl_->getKernelContext());
+
+    (*pt_kernel_)(impl_->getKernelContext());
+  }
 }
 ```

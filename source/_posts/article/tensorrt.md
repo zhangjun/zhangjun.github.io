@@ -62,8 +62,27 @@ python3
 
 # TensorRT 基础
 ## 创建引擎
+```
+Logger gLogger;
+IBuilder* builder = createInferBuilder(gLogger);
+nvinfer1::INetworkDefinition* network = builder->createNetworkV2(1U << static_cast<uint32_t>(NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));
+```
 ## 构建推理
+```
+IBuilderConfig* config = builder->createBuilderConfig();
+config->setMemoryPoolLimit(1 << 20);
+//设置推理精度
+config->setFlag(nvinfer1::BuilderFlag::kFP16);
 
+engine = builder->buildSerializedNetwork(*network, *config);
+context = engine->createExecutionContext();
+```
+
+```
+void* buffers[n];
+engine->getBindingIndex(
+context->enqueueV2(buffers, stream, nullptr);
+```
 ## plugin
 
 ## TensorRT 优化
