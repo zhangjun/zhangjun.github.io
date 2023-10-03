@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="[TOC] introduction install可以使用三种方式进行安装，包括  container 形式进行安装，下载NGC container;  debian 形式安装 pip 形式进行安装  container 形式安装下载https:&#x2F;&#x2F;github.com&#x2F;NVIDIA&#x2F;TensorRT&#x2F;blob&#x2F;main&#x2F;docker&#x2F;ubuntu-18.04.Dockerfiledocker">
+<meta property="og:type" content="article">
+<meta property="og:title" content="TensorRT">
+<meta property="og:url" content="http://example.com/content/2022/01/06/article/tensorrt/index.html">
+<meta property="og:site_name" content="风花雪月">
+<meta property="og:description" content="[TOC] introduction install可以使用三种方式进行安装，包括  container 形式进行安装，下载NGC container;  debian 形式安装 pip 形式进行安装  container 形式安装下载https:&#x2F;&#x2F;github.com&#x2F;NVIDIA&#x2F;TensorRT&#x2F;blob&#x2F;main&#x2F;docker&#x2F;ubuntu-18.04.Dockerfiledocker">
+<meta property="og:locale">
+<meta property="og:image" content="https://user-images.githubusercontent.com/1312389/150677468-932f4721-78ee-4789-936d-2e0dd4c13f4c.png">
+<meta property="og:image" content="https://user-images.githubusercontent.com/1312389/150677789-25ed7568-b01d-4ccc-9e15-0266a61ae2c2.png">
+<meta property="article:published_time" content="2022-01-06T07:47:06.000Z">
+<meta property="article:modified_time" content="2023-10-03T15:49:50.724Z">
+<meta property="article:author" content="zhangjun">
+<meta property="article:tag" content="GPU, TensorRT">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://user-images.githubusercontent.com/1312389/150677468-932f4721-78ee-4789-936d-2e0dd4c13f4c.png">
+
+<link rel="canonical" href="http://example.com/content/2022/01/06/article/tensorrt/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>TensorRT | 风花雪月</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风花雪月</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/content/2022/01/06/article/tensorrt/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhangjun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风花雪月">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          TensorRT
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2022-01-06 07:47:06" itemprop="dateCreated datePublished" datetime="2022-01-06T07:47:06+00:00">2022-01-06</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-10-03 15:49:50" itemprop="dateModified" datetime="2023-10-03T15:49:50+00:00">2023-10-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>[TOC]</p>
+<h1 id="introduction"><a href="#introduction" class="headerlink" title="introduction"></a>introduction</h1><p><img src="https://user-images.githubusercontent.com/1312389/150677468-932f4721-78ee-4789-936d-2e0dd4c13f4c.png" alt="TensorRT"></p>
+<h1 id="install"><a href="#install" class="headerlink" title="install"></a>install</h1><p>可以使用三种方式进行安装，包括</p>
+<ul>
+<li>container 形式进行安装，下载<a target="_blank" rel="noopener" href="http://ngc.nvidia.com/">NGC container</a>; </li>
+<li>debian 形式安装</li>
+<li>pip 形式进行安装</li>
+</ul>
+<h2 id="container-形式安装"><a href="#container-形式安装" class="headerlink" title="container 形式安装"></a>container 形式安装</h2><p>下载<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT/blob/main/docker/ubuntu-18.04.Dockerfile">https://github.com/NVIDIA/TensorRT/blob/main/docker/ubuntu-18.04.Dockerfile</a><br><code>docker build -f ubuntu-18.04.Dockerfile --build-arg CUDA_VERSION=11.4.3 --tag=tensorrt-ubuntu .</code></p>
+<h2 id="debian-形式安装"><a href="#debian-形式安装" class="headerlink" title="debian 形式安装"></a>debian 形式安装</h2><h2 id="pip形式进行安装"><a href="#pip形式进行安装" class="headerlink" title="pip形式进行安装"></a>pip形式进行安装</h2><p>与TensorRT包里面wheel包安装形式不同，这种方式是自己管理TensorRT安装，不需要提前安装TensorRT包。目前只支持Python 3.6～3.9和CUDA 11.4。</p>
+<p>安装前的准备</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install nvidia-pyindex</span><br></pre></td></tr></table></figure>
+<p>pip install时需要额外指定<code>--extra-index-url https://pypi.ngc.nvidia.com</code></p>
+<p>安装TensorRT wheel包</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python3 -m pip install --upgrade nvidia-tensorrt</span><br></pre></td></tr></table></figure>
+<p>进行验证</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">python3</span><br><span class="line">&gt;&gt;&gt; import tensorrt</span><br><span class="line">&gt;&gt;&gt; print(tensorrt.__version__)</span><br><span class="line">&gt;&gt;&gt; assert tensorrt.Builder(tensorrt.Logger())</span><br></pre></td></tr></table></figure>
+
+<h1 id="TensorRT生态"><a href="#TensorRT生态" class="headerlink" title="TensorRT生态"></a>TensorRT生态</h1><h2 id="basic-workflow"><a href="#basic-workflow" class="headerlink" title="basic workflow"></a>basic workflow</h2><p><img src="https://user-images.githubusercontent.com/1312389/150677789-25ed7568-b01d-4ccc-9e15-0266a61ae2c2.png" alt="workflow"></p>
+<h2 id="convert"><a href="#convert" class="headerlink" title="convert"></a>convert</h2><ul>
+<li>使用<a target="_blank" rel="noopener" href="https://github.com/tensorflow/tensorflow/tree/master/tensorflow/compiler/tf2tensorrt">TF-TRT</a></li>
+<li>使用<a target="_blank" rel="noopener" href="https://github.com/NVIDIA/Torch-TensorRT">Torch-TensorRT</a></li>
+<li>onnx转换器转换.onnx模型</li>
+<li>使用<a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/index.html">TensorRT API</a>进行组网</li>
+</ul>
+<h2 id="deploy"><a href="#deploy" class="headerlink" title="deploy"></a>deploy</h2><ul>
+<li><p>使用 TensorFlow</p>
+<p>使用 TensorFflow 模型部署即可，TensorRT不支持的OP，会fall back到TensorFlow实现。</p>
+</li>
+<li><p>使用 TRT Runtime API</p>
+<p>开销最小，能实现细粒度控制。对于不是原生支持的OP，需要使用plugin进行实现</p>
+</li>
+<li><p>使用 <a target="_blank" rel="noopener" href="https://github.com/triton-inference-server/server">Nvidia Triton Inference Server</a></p>
+<p>能支持多种框架，包括 TensorFlow, TensorRT, PyTorch, ONNX Runtime, 或者自定义框架。</p>
+</li>
+</ul>
+<h1 id="TensorRT-基础介绍"><a href="#TensorRT-基础介绍" class="headerlink" title="TensorRT 基础介绍"></a>TensorRT 基础介绍</h1><h2 id="创建引擎"><a href="#创建引擎" class="headerlink" title="创建引擎"></a>创建引擎</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Logger gLogger;</span><br><span class="line">IBuilder* builder &#x3D; createInferBuilder(gLogger);</span><br><span class="line">nvinfer1::INetworkDefinition* network &#x3D; builder-&gt;createNetworkV2(1U &lt;&lt; static_cast&lt;uint32_t&gt;(NetworkDefinitionCreationFlag::kEXPLICIT_BATCH));</span><br></pre></td></tr></table></figure>
+<h2 id="构建推理"><a href="#构建推理" class="headerlink" title="构建推理"></a>构建推理</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">IBuilderConfig* config &#x3D; builder-&gt;createBuilderConfig();</span><br><span class="line">config-&gt;setMemoryPoolLimit(1 &lt;&lt; 20);</span><br><span class="line">&#x2F;&#x2F;设置推理精度</span><br><span class="line">config-&gt;setFlag(nvinfer1::BuilderFlag::kFP16);</span><br><span class="line"></span><br><span class="line">engine &#x3D; builder-&gt;buildSerializedNetwork(*network, *config);</span><br><span class="line">context &#x3D; engine-&gt;createExecutionContext();</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">void* buffers[n];</span><br><span class="line">engine-&gt;getBindingIndex(</span><br><span class="line">context-&gt;enqueueV2(buffers, stream, nullptr);</span><br></pre></td></tr></table></figure>
+<h2 id="dynamic-shape"><a href="#dynamic-shape" class="headerlink" title="dynamic shape"></a>dynamic shape</h2><p> createNetwork()与createNetworkV2()的区别有两处，一是前者处理的维度为(C,H,W), 后者为(B,C,H,W)；二是后者支持dynamic shapes。</p>
+<h2 id="plugin"><a href="#plugin" class="headerlink" title="plugin"></a>plugin</h2><ul>
+<li>createNetwork()</li>
+<li>createNetworkV2()<h2 id="TensorRT-优化"><a href="#TensorRT-优化" class="headerlink" title="TensorRT 优化"></a>TensorRT 优化</h2><a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33287871/article/details/117201271">https://blog.csdn.net/qq_33287871/article/details/117201271</a></li>
+<li>Weight &amp;Activation Precision Calibration</li>
+<li>Layer &amp; Tensor Fusion</li>
+<li>Kernel Auto-Tuning</li>
+<li>Dynamic Tensor Memory</li>
+<li>Multi-Stream Execution</li>
+</ul>
+<h1 id="TensorRT-API"><a href="#TensorRT-API" class="headerlink" title="TensorRT API"></a>TensorRT API</h1> <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">bool reshapeWeights(</span><br><span class="line">    const Weights&amp; input, int32_t const* shape, int32_t const* shapeOrder, void* data, int32_t nbDims) noexcept;</span><br><span class="line">bool reorderSubBuffers(</span><br><span class="line">    void* input, int32_t const* order, int32_t num, int32_t size) noexcept;</span><br><span class="line">bool transposeSubBuffers(</span><br><span class="line">    void* input, DataType type, int32_t num, int32_t height, int32_t width) noexcept;</span><br></pre></td></tr></table></figure>
+<h1 id="TensorRT-常见问题"><a href="#TensorRT-常见问题" class="headerlink" title="TensorRT 常见问题"></a>TensorRT 常见问题</h1><h1 id="DLA"><a href="#DLA" class="headerlink" title="DLA"></a>DLA</h1><h2 id="DLA-Supported-Layers"><a href="#DLA-Supported-Layers" class="headerlink" title="DLA Supported Layers"></a>DLA Supported Layers</h2><h1 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h1><p><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/TensorRT">TensorRT</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/developer-guide/">TensorRT Developer Guide</a></p>
+<p><a target="_blank" rel="noopener" href="https://docs.nvidia.com/deeplearning/tensorrt/api/index.html">TensorRT API</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/onnx/onnx-tensorrt">ONNX-TensorRT</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/NVIDIA/Torch-TensorRT">Torch-TensorRT</a></p>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/GPU-TensorRT/" rel="tag"># GPU, TensorRT</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/content/2022/01/05/article/paddlelite-metal/" rel="prev" title="Metal for Paddle Lite">
+      <i class="fa fa-chevron-left"></i> Metal for Paddle Lite
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/content/2022/01/09/article/modern_cpp/" rel="next" title="Modern Cpp">
+      Modern Cpp <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#introduction"><span class="nav-number">1.</span> <span class="nav-text">introduction</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#install"><span class="nav-number">2.</span> <span class="nav-text">install</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#container-%E5%BD%A2%E5%BC%8F%E5%AE%89%E8%A3%85"><span class="nav-number">2.1.</span> <span class="nav-text">container 形式安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#debian-%E5%BD%A2%E5%BC%8F%E5%AE%89%E8%A3%85"><span class="nav-number">2.2.</span> <span class="nav-text">debian 形式安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pip%E5%BD%A2%E5%BC%8F%E8%BF%9B%E8%A1%8C%E5%AE%89%E8%A3%85"><span class="nav-number">2.3.</span> <span class="nav-text">pip形式进行安装</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorRT%E7%94%9F%E6%80%81"><span class="nav-number">3.</span> <span class="nav-text">TensorRT生态</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#basic-workflow"><span class="nav-number">3.1.</span> <span class="nav-text">basic workflow</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#convert"><span class="nav-number">3.2.</span> <span class="nav-text">convert</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deploy"><span class="nav-number">3.3.</span> <span class="nav-text">deploy</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorRT-%E5%9F%BA%E7%A1%80%E4%BB%8B%E7%BB%8D"><span class="nav-number">4.</span> <span class="nav-text">TensorRT 基础介绍</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9B%E5%BB%BA%E5%BC%95%E6%93%8E"><span class="nav-number">4.1.</span> <span class="nav-text">创建引擎</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9E%84%E5%BB%BA%E6%8E%A8%E7%90%86"><span class="nav-number">4.2.</span> <span class="nav-text">构建推理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#dynamic-shape"><span class="nav-number">4.3.</span> <span class="nav-text">dynamic shape</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#plugin"><span class="nav-number">4.4.</span> <span class="nav-text">plugin</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#TensorRT-%E4%BC%98%E5%8C%96"><span class="nav-number">4.5.</span> <span class="nav-text">TensorRT 优化</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorRT-API"><span class="nav-number">5.</span> <span class="nav-text">TensorRT API</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#TensorRT-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-number">6.</span> <span class="nav-text">TensorRT 常见问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#DLA"><span class="nav-number">7.</span> <span class="nav-text">DLA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DLA-Supported-Layers"><span class="nav-number">7.1.</span> <span class="nav-text">DLA Supported Layers</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#reference"><span class="nav-number">8.</span> <span class="nav-text">reference</span></a></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">zhangjun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangjun</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>

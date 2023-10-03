@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.4.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"example.com","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="corecontext12345678910111213class KernelContext &amp;#123; public:  template &lt;typename ContextT&gt;  ContextT&amp; As() &amp;#123;    if (!ctx_.valid()) &amp;#123;      ctx_.set&lt;ContextT&gt;();    &amp;#125;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Paddle Lite framework">
+<meta property="og:url" content="http://example.com/content/2021/09/19/article/paddle-lite/index.html">
+<meta property="og:site_name" content="风花雪月">
+<meta property="og:description" content="corecontext12345678910111213class KernelContext &amp;#123; public:  template &lt;typename ContextT&gt;  ContextT&amp; As() &amp;#123;    if (!ctx_.valid()) &amp;#123;      ctx_.set&lt;ContextT&gt;();    &amp;#125;">
+<meta property="og:locale">
+<meta property="article:published_time" content="2021-09-19T14:13:58.000Z">
+<meta property="article:modified_time" content="2023-10-03T15:49:50.724Z">
+<meta property="article:author" content="zhangjun">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://example.com/content/2021/09/19/article/paddle-lite/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-Hans'
+  };
+</script>
+
+  <title>Paddle Lite framework | 风花雪月</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">风花雪月</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>Search
+        </a>
+      </li>
+  </ul>
+</nav>
+
+
+
+  <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container"></div>
+  <span class="popup-btn-close">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="algolia-results">
+  <div id="algolia-stats"></div>
+  <div id="algolia-hits"></div>
+  <div id="algolia-pagination" class="algolia-pagination"></div>
+</div>
+
+      
+    </div>
+  </div>
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-Hans">
+    <link itemprop="mainEntityOfPage" href="http://example.com/content/2021/09/19/article/paddle-lite/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="zhangjun">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="风花雪月">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Paddle Lite framework
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2021-09-19 14:13:58" itemprop="dateCreated datePublished" datetime="2021-09-19T14:13:58+00:00">2021-09-19</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2023-10-03 15:49:50" itemprop="dateModified" datetime="2023-10-03T15:49:50+00:00">2023-10-03</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="core"><a href="#core" class="headerlink" title="core"></a>core</h1><h2 id="context"><a href="#context" class="headerlink" title="context"></a>context</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">class KernelContext &#123;</span><br><span class="line"> public:</span><br><span class="line">  template &lt;typename ContextT&gt;</span><br><span class="line">  ContextT&amp; As() &#123;</span><br><span class="line">    if (!ctx_.valid()) &#123;</span><br><span class="line">      ctx_.set&lt;ContextT&gt;();</span><br><span class="line">    &#125;</span><br><span class="line">    return *ctx_.get_mutable&lt;ContextT&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  Any ctx_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">class ContextScheduler &#123;</span><br><span class="line"> public:</span><br><span class="line">  static ContextScheduler&amp; Global() &#123;</span><br><span class="line">    static auto* x &#x3D; new ContextScheduler;</span><br><span class="line">    return *x;</span><br><span class="line">  &#125;</span><br><span class="line">  std::unique_ptr&lt;KernelContext&gt; NewContext(</span><br><span class="line">      TargetType target,</span><br><span class="line">      &#x2F;*only used for cuda context*&#x2F; int exec_stream_id &#x3D; 0) &#123;</span><br><span class="line">    std::unique_ptr&lt;KernelContext&gt; ctx(new KernelContext);</span><br><span class="line">    switch (target) &#123;</span><br><span class="line">      case TARGET(kHost):</span><br><span class="line">        kernel_contexts_[TargetType::kHost].As&lt;HostContext&gt;().CopySharedTo(</span><br><span class="line">            &amp;ctx-&gt;As&lt;HostContext&gt;());</span><br><span class="line">        break;</span><br><span class="line">    &#125;</span><br><span class="line">    return ctx;</span><br><span class="line">  &#125; </span><br><span class="line">private:</span><br><span class="line">  template &lt;TargetType Type, typename ContextT&gt;</span><br><span class="line">  void InitContext() &#123;</span><br><span class="line">    kernel_contexts_[Type].As&lt;ContextT&gt;().InitOnce();</span><br><span class="line">  &#125;</span><br><span class="line">  ContextScheduler() &#123;</span><br><span class="line">    InitContext&lt;TargetType::kHost, HostContext&gt;();</span><br><span class="line">  &#125;</span><br><span class="line">private:</span><br><span class="line">  std::map&lt;TargetType, KernelContext&gt; kernel_contexts_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="op-lite"><a href="#op-lite" class="headerlink" title="op lite"></a>op lite</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">class OpLite : public Registry &#123;</span><br><span class="line"> public:</span><br><span class="line">  OpLite() &#x3D; default;</span><br><span class="line">  explicit OpLite(const std::string &amp;type) : op_type_(type) &#123;&#125;</span><br><span class="line">  explicit OpLite(const std::vector&lt;Place&gt; &amp;valid_places)</span><br><span class="line">      : valid_places_(valid_places) &#123;&#125;</span><br><span class="line"></span><br><span class="line">  void SetValidPlaces(const std::vector&lt;Place&gt; &amp;places) &#123;</span><br><span class="line">    VLOG(5) &lt;&lt; &quot;valid places &quot; &lt;&lt; valid_places_.size();</span><br><span class="line">    valid_places_ &#x3D; places;</span><br><span class="line">  &#125;</span><br><span class="line">  virtual bool Run();</span><br><span class="line">  &#x2F;&#x2F; Indicate whether the Op runs only once or not</span><br><span class="line">  virtual bool run_once() const &#123; return false; &#125;</span><br><span class="line">  std::string Type() const &#123; return op_type_; &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; Link the external execution environ to internal context.</span><br><span class="line">  bool Attach(const cpp::OpDesc &amp;opdesc, lite::Scope *scope);</span><br><span class="line"></span><br><span class="line">  template &lt;typename T&gt;</span><br><span class="line">  inline void AttachParam(T *param) &#123;</span><br><span class="line">    op_param_ &#x3D; static_cast&lt;T *&gt;(param);</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; Create all the kernels for the valid targets.</span><br><span class="line">  std::vector&lt;std::unique_ptr&lt;KernelBase&gt;&gt; CreateKernels(</span><br><span class="line">      const std::vector&lt;Place&gt; &amp;places, const std::string &amp;kernel_type &#x3D; &quot;&quot;);</span><br><span class="line"></span><br><span class="line">  Scope *scope() &#123; return scope_; &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; Assign op param to kernel.</span><br><span class="line">  virtual void AttachKernel(KernelBase *kernel) &#x3D; 0;</span><br><span class="line">  void SetKernel(std::vector&lt;std::unique_ptr&lt;KernelBase&gt;&gt; &amp;kernels) &#123;  &#x2F;&#x2F; NOLINT</span><br><span class="line">    kernel_ &#x3D; std::move(kernels.front());</span><br><span class="line">    kernel_-&gt;SetContext(</span><br><span class="line">        ContextScheduler::Global().NewContext(kernel_-&gt;target()));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  KernelBase *GetKernel() &#123;  &#x2F;&#x2F; NOLINT</span><br><span class="line">    return kernel_.get();</span><br><span class="line">  &#125;</span><br><span class="line">  virtual ~OpLite() &#x3D; default;</span><br><span class="line"> protected:</span><br><span class="line">  friend class mir::Node;</span><br><span class="line">  friend class mir::SSAGraph;</span><br><span class="line"> protected:</span><br><span class="line">  Scope *scope_&#123;nullptr&#125;;</span><br><span class="line">  std::unique_ptr&lt;KernelBase&gt; kernel_;</span><br><span class="line">  std::string op_type_;</span><br><span class="line">  std::vector&lt;Place&gt; valid_places_;</span><br><span class="line">  Place kernel_place_&#123;TARGET(kHost), PRECISION(kFloat)&#125;;</span><br><span class="line">  std::unique_ptr&lt;OpInfo&gt; op_info_;</span><br><span class="line">  &#x2F;&#x2F; todo: it&#39;s prefered to combine last_input_shapes and</span><br><span class="line">  &#x2F;&#x2F; last_input_lods into a single hash value to decrease</span><br><span class="line">  &#x2F;&#x2F; memory usage.</span><br><span class="line">  std::vector&lt;DDimLite&gt; last_input_shapes&#123;&#125;;</span><br><span class="line">  std::vector&lt;std::vector&lt;std::vector&lt;uint64_t&gt;&gt;&gt; last_input_lods&#123;&#125;;</span><br><span class="line">  std::vector&lt;DDimLite&gt; last_output_shapes&#123;&#125;;</span><br><span class="line">  std::vector&lt;std::vector&lt;std::vector&lt;uint64_t&gt;&gt;&gt; last_output_lods&#123;&#125;;</span><br><span class="line">  mutable operators::ParamBase *op_param_&#123;nullptr&#125;;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  &#x2F;&#x2F; Infer Shape according to memory, if current input shapes are consistent</span><br><span class="line">  &#x2F;&#x2F; with that of previous inputs, output shapes of last time will be reused.</span><br><span class="line">  bool InferShapeWithCache();</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">std::vector&lt;std::unique_ptr&lt;KernelBase&gt;&gt; OpLite::CreateKernels(</span><br><span class="line">    const std::vector&lt;Place&gt; &amp;places, const std::string &amp;kernel_type) &#123;</span><br><span class="line">  std::vector&lt;std::unique_ptr&lt;KernelBase&gt;&gt; kernels;</span><br><span class="line">  CHECK(!op_type_.empty()) &lt;&lt; &quot;op_type_ should be set first&quot;;</span><br><span class="line"></span><br><span class="line">  auto pick_kernel &#x3D; [&amp;](const Place &amp;place) &#123;</span><br><span class="line">    auto ks &#x3D; KernelRegistry::Global().Create(</span><br><span class="line">        op_type_, place.target, place.precision, place.layout);</span><br><span class="line">    VLOG(5) &lt;&lt; &quot;pick kernel for &quot; &lt;&lt; op_info()-&gt;Type() &lt;&lt; &quot; &quot;</span><br><span class="line">            &lt;&lt; place.DebugString() &lt;&lt; &quot; get &quot; &lt;&lt; ks.size() &lt;&lt; &quot; kernels&quot;;</span><br><span class="line">    for (auto &amp;&amp;it : ks) &#123;</span><br><span class="line">      AttachKernel(it.get());</span><br><span class="line">      kernels.emplace_back(std::move(it));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line">  if (!kernel_type.empty()) &#123;</span><br><span class="line">    Place place;</span><br><span class="line">    std::string op_type, alias;</span><br><span class="line">    KernelBase::ParseKernelType(kernel_type, &amp;op_type, &amp;alias, &amp;place);</span><br><span class="line">    pick_kernel(place);</span><br><span class="line">    CHECK(!kernels.empty()) &lt;&lt; &quot;no kernel for kernel type &quot; &lt;&lt; kernel_type;</span><br><span class="line">    return kernels;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::set&lt;Place&gt; expanded_places(places.begin(), places.end());</span><br><span class="line">  for (auto &amp;place : places) &#123;</span><br><span class="line">    &#x2F;&#x2F; Pick kernels those support any Precision and any DataLayout, For example:</span><br><span class="line">    &#x2F;&#x2F; kARM,kFloat,kNCHW -&gt; kARM,kFloat,kAny; kARM,kAny,kNCHW; kARM,kAny,kAny</span><br><span class="line">    expanded_places.insert(</span><br><span class="line">        Place(place.target, place.precision, DATALAYOUT(kAny)));</span><br><span class="line">    expanded_places.insert(Place(place.target, PRECISION(kAny), place.layout));</span><br><span class="line">    expanded_places.insert(</span><br><span class="line">        Place(place.target, PRECISION(kAny), DATALAYOUT(kAny)));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::set&lt;TargetType&gt; targets;</span><br><span class="line">  for (auto place : expanded_places) &#123;</span><br><span class="line">    pick_kernel(place);</span><br><span class="line">    targets.insert(place.target);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  VLOG(5) &lt;&lt; &quot;op &quot; &lt;&lt; op_type_ &lt;&lt; &quot; get &quot; &lt;&lt; kernels.size() &lt;&lt; &quot; kernels&quot;;</span><br><span class="line">  return kernels;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * Operator Information, such as some description. It will be shared by all the</span><br><span class="line"> * kernels of the same operator.</span><br><span class="line"> *&#x2F;</span><br><span class="line">class OpInfo : public cpp::OpDesc &#123;</span><br><span class="line"> public:</span><br><span class="line">  OpInfo(const OpInfo &amp;) &#x3D; default;</span><br><span class="line">  explicit OpInfo(const cpp::OpDesc &amp;other) : cpp::OpDesc(other) &#123;&#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="op-registry"><a href="#op-registry" class="headerlink" title="op registry"></a>op registry</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">class OpKernelInfoCollector &#123;</span><br><span class="line"> public:</span><br><span class="line">  static OpKernelInfoCollector&amp; Global() &#123;</span><br><span class="line">    static auto* x &#x3D; new OpKernelInfoCollector;</span><br><span class="line">    return *x;</span><br><span class="line">  &#125;</span><br><span class="line">  void AddOp2path(const std::string&amp; op_name, const std::string&amp; op_path);</span><br><span class="line">  void AddKernel2path(const std::string&amp; kernel_name,</span><br><span class="line">                      const std::string&amp; kernel_path);</span><br><span class="line">  </span><br><span class="line"> private:</span><br><span class="line">  std::map&lt;std::string, std::string&gt; op2path_;</span><br><span class="line">  std::map&lt;std::string, std::string&gt; kernel2path_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line">class OpLiteFactory &#123;</span><br><span class="line"> public:</span><br><span class="line">  &#x2F;&#x2F; Register a function to create an op</span><br><span class="line">  void RegisterCreator(const std::string&amp; op_type,</span><br><span class="line">                       std::function&lt;std::shared_ptr&lt;OpLite&gt;()&gt; fun) &#123;</span><br><span class="line">    op_registry_[op_type] &#x3D; fun;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  static OpLiteFactory&amp; Global() &#123;</span><br><span class="line">    static OpLiteFactory* x &#x3D; new OpLiteFactory;</span><br><span class="line">    return *x;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::shared_ptr&lt;OpLite&gt; Create(const std::string&amp; op_type) const &#123;</span><br><span class="line">    auto it &#x3D; op_registry_.find(op_type);</span><br><span class="line">    if (it &#x3D;&#x3D; op_registry_.end()) return nullptr;</span><br><span class="line">    return it-&gt;second();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::string DebugString();</span><br><span class="line"></span><br><span class="line">  std::vector&lt;std::string&gt; GetAllOps() const &#123;</span><br><span class="line">    std::vector&lt;std::string&gt; res;</span><br><span class="line">    for (const auto&amp; op : op_registry_) &#123;</span><br><span class="line">      res.push_back(op.first);</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> protected:</span><br><span class="line">  std::map&lt;std::string, std::function&lt;std::shared_ptr&lt;OpLite&gt;()&gt;&gt; op_registry_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br></pre></td><td class="code"><pre><span class="line">class OpLiteRegistrar &#123;</span><br><span class="line"> public:</span><br><span class="line">  OpLiteRegistrar(const std::string&amp; op_type,</span><br><span class="line">                  std::function&lt;std::shared_ptr&lt;OpLite&gt;()&gt; fun) &#123;</span><br><span class="line">    OpLiteFactory::Global().RegisterCreator(op_type, fun);</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; Touch function is used to guarantee registrar was initialized.</span><br><span class="line">  void touch() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class KernelFactory &#123;</span><br><span class="line"> public:</span><br><span class="line">  &#x2F;&#x2F; Register a function to create kernels</span><br><span class="line">  void RegisterCreator(const std::string&amp; op_type,</span><br><span class="line">                       TargetType target,</span><br><span class="line">                       PrecisionType precision,</span><br><span class="line">                       DataLayoutType layout,</span><br><span class="line">                       std::function&lt;std::unique_ptr&lt;KernelBase&gt;()&gt; fun) &#123;</span><br><span class="line">    op_registry_[op_type][std::make_tuple(target, precision, layout)].push_back(</span><br><span class="line">        fun);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  static KernelFactory&amp; Global() &#123;</span><br><span class="line">    static KernelFactory* x &#x3D; new KernelFactory;</span><br><span class="line">    return *x;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;**</span><br><span class="line">   * Create all kernels belongs to an op.</span><br><span class="line">   *&#x2F;</span><br><span class="line">  std::list&lt;std::unique_ptr&lt;KernelBase&gt;&gt; Create(const std::string&amp; op_type) &#123;</span><br><span class="line">    std::list&lt;std::unique_ptr&lt;KernelBase&gt;&gt; res;</span><br><span class="line">    if (op_registry_.find(op_type) &#x3D;&#x3D; op_registry_.end()) return res;</span><br><span class="line">    auto&amp; kernel_registry &#x3D; op_registry_[op_type];</span><br><span class="line">    for (auto it &#x3D; kernel_registry.begin(); it !&#x3D; kernel_registry.end(); ++it) &#123;</span><br><span class="line">      for (auto&amp; fun : it-&gt;second) &#123;</span><br><span class="line">        res.emplace_back(fun());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;**</span><br><span class="line">   * Create a specific kernel. Return a list for API compatible.</span><br><span class="line">   *&#x2F;</span><br><span class="line">  std::list&lt;std::unique_ptr&lt;KernelBase&gt;&gt; Create(const std::string&amp; op_type,</span><br><span class="line">                                                TargetType target,</span><br><span class="line">                                                PrecisionType precision,</span><br><span class="line">                                                DataLayoutType layout) &#123;</span><br><span class="line">    std::list&lt;std::unique_ptr&lt;KernelBase&gt;&gt; res;</span><br><span class="line">    if (op_registry_.find(op_type) &#x3D;&#x3D; op_registry_.end()) return res;</span><br><span class="line">    auto&amp; kernel_registry &#x3D; op_registry_[op_type];</span><br><span class="line">    auto it &#x3D; kernel_registry.find(std::make_tuple(target, precision, layout));</span><br><span class="line">    if (it &#x3D;&#x3D; kernel_registry.end()) return res;</span><br><span class="line">    for (auto&amp; fun : it-&gt;second) &#123;</span><br><span class="line">      res.emplace_back(fun());</span><br><span class="line">    &#125;</span><br><span class="line">    return res;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> protected:</span><br><span class="line">  &#x2F;&#x2F; Outer map: op -&gt; a map of kernel.</span><br><span class="line">  &#x2F;&#x2F; Inner map: kernel -&gt; creator function.</span><br><span class="line">  &#x2F;&#x2F; Each kernel was represented by a combination of &lt;TargetType, PrecisionType,</span><br><span class="line">  &#x2F;&#x2F; DataLayoutType&gt;</span><br><span class="line">  std::map&lt;std::string,</span><br><span class="line">           std::map&lt;std::tuple&lt;TargetType, PrecisionType, DataLayoutType&gt;,</span><br><span class="line">                    std::list&lt;std::function&lt;std::unique_ptr&lt;KernelBase&gt;()&gt;&gt;&gt;&gt;</span><br><span class="line">      op_registry_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; Register Kernel by initializing a static KernelRegistrar instance</span><br><span class="line">class KernelRegistrar &#123;</span><br><span class="line"> public:</span><br><span class="line">  KernelRegistrar(const std::string&amp; op_type,</span><br><span class="line">                  TargetType target,</span><br><span class="line">                  PrecisionType precision,</span><br><span class="line">                  DataLayoutType layout,</span><br><span class="line">                  std::function&lt;std::unique_ptr&lt;KernelBase&gt;()&gt; fun) &#123;</span><br><span class="line">    KernelFactory::Global().RegisterCreator(</span><br><span class="line">        op_type, target, precision, layout, fun);</span><br><span class="line">  &#125;</span><br><span class="line">  &#x2F;&#x2F; Touch function is used to guarantee registrar was initialized.</span><br><span class="line">  void touch() &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">class ParamTypeDummyRegistry &#123;</span><br><span class="line"> public:</span><br><span class="line">  struct NewInstance &#123;</span><br><span class="line">    NewInstance() &#123;&#125;</span><br><span class="line">    NewInstance&amp; BindInput(const std::string&amp; arg_name,</span><br><span class="line">                           const ParamType&amp; ptype) &#123;</span><br><span class="line">      return *this;</span><br><span class="line">    &#125;</span><br><span class="line">    NewInstance&amp; BindOutput(const std::string&amp; arg_name,</span><br><span class="line">                            const ParamType&amp; ptype) &#123;</span><br><span class="line">      return *this;</span><br><span class="line">    &#125;</span><br><span class="line">    NewInstance&amp; SetVersion(const std::string&amp; version) &#123; return *this; &#125;</span><br><span class="line">    NewInstance&amp; BindPaddleOpVersion(const std::string&amp; op_type,</span><br><span class="line">                                     int32_t version_id) &#123;</span><br><span class="line">      return *this;</span><br><span class="line">    &#125;</span><br><span class="line">    bool Finalize() &#123; return true; &#125;</span><br><span class="line">  &#125;;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  ParamTypeDummyRegistry() &#x3D; default;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h1 id="注册机制"><a href="#注册机制" class="headerlink" title="注册机制"></a>注册机制</h1><h2 id="op注册"><a href="#op注册" class="headerlink" title="op注册"></a>op注册</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">#define REGISTER_LITE_OP(op_type__, OpClass)                                   \</span><br><span class="line">  static paddle::lite::OpLiteRegistrar op_type__##__registry(                  \</span><br><span class="line">      #op_type__, []() &#123;                                                       \</span><br><span class="line">        return std::unique_ptr&lt;paddle::lite::OpLite&gt;(new OpClass(#op_type__)); \</span><br><span class="line">      &#125;);                                                                      \</span><br><span class="line">  int touch_op_##op_type__() &#123;                                                 \</span><br><span class="line">    op_type__##__registry.touch();                                             \</span><br><span class="line">    OpKernelInfoCollector::Global().AddOp2path(#op_type__, __FILE__);          \</span><br><span class="line">    return 0;                                                                  \</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="kernel-注册"><a href="#kernel-注册" class="headerlink" title="kernel 注册"></a>kernel 注册</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Register a kernel.</span><br><span class="line">#define REGISTER_LITE_KERNEL(                                                 \</span><br><span class="line">    op_type__, target__, precision__, layout__, KernelClass, alias__)         \</span><br><span class="line">  static paddle::lite::KernelRegistrar                                        \</span><br><span class="line">      op_type__##target__##precision__##layout__##alias__##_kernel_registry(  \</span><br><span class="line">          #op_type__,                                                         \</span><br><span class="line">          TARGET(target__),                                                   \</span><br><span class="line">          PRECISION(precision__),                                             \</span><br><span class="line">          DATALAYOUT(layout__),                                               \</span><br><span class="line">          []() &#123;                                                              \</span><br><span class="line">            std::unique_ptr&lt;KernelClass&gt; x(new KernelClass);                  \</span><br><span class="line">            x-&gt;set_op_type(#op_type__);                                       \</span><br><span class="line">            x-&gt;set_alias(#alias__);                                           \</span><br><span class="line">            return x;                                                         \</span><br><span class="line">          &#125;);                                                                 \</span><br><span class="line">  int touch_##op_type__##target__##precision__##layout__##alias__() &#123;         \</span><br><span class="line">    op_type__##target__##precision__##layout__##alias__##_kernel_registry     \</span><br><span class="line">        .touch();                                                             \</span><br><span class="line">    OpKernelInfoCollector::Global().AddKernel2path(                           \</span><br><span class="line">        #op_type__ &quot;,&quot; #target__ &quot;,&quot; #precision__ &quot;,&quot; #layout__ &quot;,&quot; #alias__, \</span><br><span class="line">        __FILE__);                                                            \</span><br><span class="line">    return 0;                                                                 \</span><br><span class="line">  &#125;                                                                           \</span><br><span class="line">  ParamTypeRegistry(                                                          \</span><br><span class="line">      op_type__, target__, precision__, layout__, KernelClass, alias__)</span><br></pre></td></tr></table></figure>
+<h1 id="program"><a href="#program" class="headerlink" title="program"></a>program</h1><h2 id="scope"><a href="#scope" class="headerlink" title="scope"></a>scope</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br></pre></td><td class="code"><pre><span class="line">class Scope final &#123;</span><br><span class="line"> public:</span><br><span class="line">  Scope()</span><br><span class="line">      : kids_lock_&#123;new lite::fluid::RWLock&#125;,</span><br><span class="line">        vars_lock_&#123;new lite::fluid::RWLock&#125;,</span><br><span class="line">        rwlock_&#123;new lite::fluid::RWLock&#125; &#123;&#125;</span><br><span class="line">  &#x2F;&#x2F; delete below two functions to allow pybind to recognise it cannot make a</span><br><span class="line">  &#x2F;&#x2F; copy</span><br><span class="line">  &#x2F;&#x2F; link:</span><br><span class="line">  &#x2F;&#x2F; https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;53807248&#x2F;pybind11-returning-a-pointer-to-a-container-of-unique-ptr</span><br><span class="line">  Scope(const Scope&amp;) &#x3D; delete;</span><br><span class="line">  Scope&amp; operator&#x3D;(const Scope&amp;) &#x3D; delete;</span><br><span class="line">  ~Scope();</span><br><span class="line"></span><br><span class="line">  Scope&amp; NewScope() const;</span><br><span class="line"></span><br><span class="line">  Variable* Var(const std::string&amp; name);</span><br><span class="line"></span><br><span class="line">  Variable* LocalVar(const std::string&amp; name);</span><br><span class="line"></span><br><span class="line">  Variable* FindVar(const std::string&amp; name) const;</span><br><span class="line"></span><br><span class="line">  Variable* FindLocalVar(const std::string&amp; name) const;</span><br><span class="line"></span><br><span class="line">  const Scope* parent() const &#123; return parent_; &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; Get attribute params stored in parent scopes.</span><br><span class="line">  std::vector&lt;std::string&gt; AttributeVarNames() const;</span><br><span class="line">  &#x2F;&#x2F; Following the legacy scope interface.</span><br><span class="line">  std::vector&lt;std::string&gt; LocalVarNames() const;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F;&#x2F; ------------------------------------- helper functions for Tensor</span><br><span class="line">  &#x2F;&#x2F;&#x2F; ----------------------------------</span><br><span class="line">  &#x2F;&#x2F; Create a Tensor variable. This will create a new Variable called &#96;name&#96;.</span><br><span class="line">  Tensor* NewTensor(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; Var(name);</span><br><span class="line">    return var-&gt;GetMutable&lt;Tensor&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const Tensor* FindTensor(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; FindVar(name);</span><br><span class="line">    if (!var) return nullptr;</span><br><span class="line">    return &amp;var-&gt;Get&lt;Tensor&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Tensor* FindMutableTensor(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; FindVar(name);</span><br><span class="line">    if (!var) return nullptr;</span><br><span class="line">    return var-&gt;GetMutable&lt;Tensor&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::vector&lt;Tensor&gt;* NewTensorList(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; Var(name);</span><br><span class="line">    return var-&gt;GetMutable&lt;std::vector&lt;Tensor&gt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  const std::vector&lt;Tensor&gt;* FindTensorList(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; FindVar(name);</span><br><span class="line">    if (!var) return nullptr;</span><br><span class="line">    return &amp;var-&gt;Get&lt;std::vector&lt;Tensor&gt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  std::vector&lt;Tensor&gt;* FindMutableTensorList(const std::string&amp; name) &#123;</span><br><span class="line">    auto* var &#x3D; FindVar(name);</span><br><span class="line">    if (!var) return nullptr;</span><br><span class="line">    return var-&gt;GetMutable&lt;std::vector&lt;Tensor&gt;&gt;();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  &#x2F;&#x2F; Scope in &#96;kids_&#96; are owned by this class.</span><br><span class="line">  mutable std::list&lt;Scope*&gt; kids_;</span><br><span class="line">  const Scope* parent_&#123;nullptr&#125;;</span><br><span class="line">  std::map&lt;std::string, std::unique_ptr&lt;Variable&gt;&gt; vars_;</span><br><span class="line">  std::unique_ptr&lt;lite::fluid::RWLock&gt; kids_lock_&#123;nullptr&#125;;</span><br><span class="line">  std::unique_ptr&lt;lite::fluid::RWLock&gt; vars_lock_&#123;nullptr&#125;;</span><br><span class="line">  std::unique_ptr&lt;lite::fluid::RWLock&gt; rwlock_&#123;nullptr&#125;;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h1 id="optimize"><a href="#optimize" class="headerlink" title="optimize"></a>optimize</h1><h2 id="optimizer"><a href="#optimizer" class="headerlink" title="optimizer"></a>optimizer</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line"> * lite::Optimizer optimize a program. It utilize the mir passes to analysis the</span><br><span class="line"> * program and export an optimized program.</span><br><span class="line"> * Example :</span><br><span class="line"> *       &#x2F;&#x2F; (1) Create an optimizer</span><br><span class="line"> *       Optimizer optim(valid_places, kernel_pick_factor);</span><br><span class="line"> *       &#x2F;&#x2F; (2) add an optimizer method</span><br><span class="line"> *       optim.AddPass(&quot;post_quant_dynamic_pass&quot;);</span><br><span class="line"> *       &#x2F;&#x2F; (3) analysis a program to export an optimized program</span><br><span class="line"> *       auto program_ &#x3D; optim.Run(std::move(program));</span><br><span class="line"> *&#x2F;</span><br><span class="line">class Optimizer &#123;</span><br><span class="line"> public:</span><br><span class="line">  Optimizer(const std::vector&lt;Place&gt;&amp; valid_places,</span><br><span class="line">            core::KernelPickFactor kernel_pick_factor)</span><br><span class="line">      : valid_places_(valid_places), kernel_pick_factor_(kernel_pick_factor) &#123;</span><br><span class="line">    CHECK(!valid_places.empty()) &lt;&lt; &quot;At least one valid_place should be set&quot;;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; Append a pass to the optimizer.</span><br><span class="line">  void AddPass(const std::string&amp; pass_name);</span><br><span class="line">  &#x2F;&#x2F; Optimize a program to generate a runtime program.</span><br><span class="line">  std::unique_ptr&lt;RuntimeProgram&gt; Run(Program&amp;&amp; program);</span><br><span class="line"></span><br><span class="line"> protected:</span><br><span class="line">  &#x2F;&#x2F; Run all the added passes.</span><br><span class="line">  void ApplyPasses(std::vector&lt;std::unique_ptr&lt;mir::SSAGraph&gt;&gt;* graphes);</span><br><span class="line"></span><br><span class="line">  &#x2F;&#x2F; Generate the optimized runtime program.</span><br><span class="line">  std::unique_ptr&lt;RuntimeProgram&gt; GenRuntimeProgram(</span><br><span class="line">      std::vector&lt;std::unique_ptr&lt;mir::SSAGraph&gt;&gt;* graphs);</span><br><span class="line"></span><br><span class="line">  void InitTargetTypeTransformPass();</span><br><span class="line">  void InitControlFlowOpUnusedInputsAndOutputsEliminatePass();</span><br><span class="line">  void InitControlFlowOpSharedInputsAndOutputsPlaceSyncPass();</span><br><span class="line">  void SpecifyKernelPickTactic(core::KernelPickFactor factor);</span><br><span class="line">  Scope* exec_scope() &#123; return exec_scope_; &#125;</span><br><span class="line"></span><br><span class="line"> private:</span><br><span class="line">  std::vector&lt;Place&gt; valid_places_;</span><br><span class="line">  Scope* exec_scope_&#123;&#125;;</span><br><span class="line">  std::vector&lt;mir::Pass*&gt; passes_;</span><br><span class="line">  std::vector&lt;std::unique_ptr&lt;mir::SSAGraph&gt;&gt; graphs_;</span><br><span class="line">  core::KernelPickFactor kernel_pick_factor_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/content/2021/09/05/article/metal_basic/" rel="prev" title="Metal Basic">
+      <i class="fa fa-chevron-left"></i> Metal Basic
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/content/2021/12/09/article/use-macos/" rel="next" title="macOS tips">
+      macOS tips <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#core"><span class="nav-number">1.</span> <span class="nav-text">core</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#context"><span class="nav-number">1.1.</span> <span class="nav-text">context</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#op-lite"><span class="nav-number">1.2.</span> <span class="nav-text">op lite</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#op-registry"><span class="nav-number">1.3.</span> <span class="nav-text">op registry</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E6%9C%BA%E5%88%B6"><span class="nav-number">2.</span> <span class="nav-text">注册机制</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#op%E6%B3%A8%E5%86%8C"><span class="nav-number">2.1.</span> <span class="nav-text">op注册</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#kernel-%E6%B3%A8%E5%86%8C"><span class="nav-number">2.2.</span> <span class="nav-text">kernel 注册</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#program"><span class="nav-number">3.</span> <span class="nav-text">program</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#scope"><span class="nav-number">3.1.</span> <span class="nav-text">scope</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#optimize"><span class="nav-number">4.</span> <span class="nav-text">optimize</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#optimizer"><span class="nav-number">4.1.</span> <span class="nav-text">optimizer</span></a></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">zhangjun</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">30</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">zhangjun</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+  
+<script src="//cdn.jsdelivr.net/npm/algoliasearch@4/dist/algoliasearch-lite.umd.js"></script>
+<script src="//cdn.jsdelivr.net/npm/instantsearch.js@4/dist/instantsearch.production.min.js"></script>
+<script src="/js/algolia-search.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
