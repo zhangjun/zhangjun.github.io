@@ -44,7 +44,7 @@ jobs:
     - name: run npm
       id: gererate-pages
       run: |
-        npm install -g hexo
+        npm install -g hexo-cli
         hexo clean
         hexo generate
 
