@@ -99,6 +99,13 @@ ignore:
 ## Themes: https://hexo.io/themes/
 theme: next
 
+# search
+path: search.xml
+per_page: 10
+order_by: -date
+field: posts
+limit: 10000
+
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
 deploy:
