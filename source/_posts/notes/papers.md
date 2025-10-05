@@ -1,6 +1,7 @@
 ---
 title: paper lists
 excerpt: 深度学习相关论文列表，涵盖推理优化、分布式训练、通信压缩、量化技术等领域的重要论文，包括PipeDream、梯度压缩、量化算法等核心技术。
+mathjax: true
 ---
 
 ## inference
