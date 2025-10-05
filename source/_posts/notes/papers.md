@@ -26,3 +26,12 @@ mathjax: true
    <img width="342" alt="image" src="https://github.com/zhangjun/zhangjun.github.io/assets/1312389/e6cd519b-8228-4540-ab24-73e6a796a3e6">
 
 ## llm
+### vla
+|title|summary|link|
+|--|--|--|
+|[Galaxea Open-World Dataset and G0 Dual-System VLA Model](https://arxiv.org/abs/2509.00576)|||
+
+### rl
+|title|summary|link|
+|--|--|--|
+|||
