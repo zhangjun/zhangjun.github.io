@@ -9,3 +9,12 @@ excerpt: GPU instruction throughput and latency analysis, detailing performance 
 
 # Instruction Latencies and Instructions/SM
 <img width="731" alt="image" src="https://user-images.githubusercontent.com/1312389/184467471-803dffdd-8be4-4402-9283-f829134bdb98.png">
+
+
+![alt text](image.png)
+
+## Little's law
+所需线程数量 = 延迟*吞吐量
+### Arithmetic Instruction Latency
+### Memory Instruction Latency
+每个时钟周期的读取字节数 = 内存带宽 / 时钟频率
