@@ -7,11 +7,11 @@ excerpt: intro for cute mma
 
 [TOC]
 
-## arch
-### mma
-### copy
+## 1 arch
+### 1.1 mma
+### 1.2 copy
 
-## MMA
+## 2 MMA
 ```cpp
 struct SM80_16x8x8_F32F16F16F32_TN
 {
@@ -85,7 +85,7 @@ struct MMA_Traits<SM80_16x8x8_F32F16F16F32_TN>
 };
 
 ```
-### MMA Operation
+### 2.1 MMA Operation
 - Operation 结构体名称
 
   [gpu arch]\_[MNK dimensions]\_[types]\_[arrangement of the A and B inputs]
@@ -95,7 +95,7 @@ struct MMA_Traits<SM80_16x8x8_F32F16F16F32_TN>
   - F32F16F16F32 分别指四个矩阵操作数的元素类型。MMA 用于计算 D=A*B+C, 对应数据类型从左到右读取(D-F32, A-F16, B-F16, C-F32). 对应 ptx 指令名称为 .f32.f16.f16.f32
   - NT 代表 A 矩阵 column major(M-major), B 矩阵 row major(N-major), 对应 ptx 指令为 .col.row.
 
-### MMA_Traits
+### 2.2 MMA_Traits
 ```cpp
 template <class MMAOperation, class... MMAOpArgs>
 struct MMA_Traits
@@ -136,10 +136,10 @@ struct MMA_Op<MMA_Traits<MMA_Op_Arg, Args...>> {
   using type = MMA_Op_Arg;
 };
 ```
-### TiledMMA
+### 2.3 TiledMMA
 
-## Atom
-### MMA_Atom
+## 3 Atom
+### 3.1 MMA_Atom
 ```cpp
 template <class... Args>
 struct MMA_Atom;
@@ -213,7 +213,7 @@ struct ThrMMA : TiledMMA
 
 - make_tiled_mma
 
-### Copy_Atom
+### 3.2 Copy_Atom
 ```cpp
 template <class... Args>
 struct Copy_Atom;
