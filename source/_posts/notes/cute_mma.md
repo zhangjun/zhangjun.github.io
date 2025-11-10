@@ -1,5 +1,5 @@
 ---
-title: cute_mma.md
+title: Cute MMA
 date: 2025-10-22 00:38:22
 tags: [cutlass, cute]
 excerpt: intro for cute mma
